@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      orders: {
+        Row: {
+          address: string | null
+          created_at: string
+          customer_name: string
+          delivery_fee: number
+          fulfilment: string
+          id: string
+          items: Json
+          notes: string | null
+          payment_method: string
+          phone: string
+          reference: string
+          status: string
+          subtotal: number
+          total: number
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          customer_name: string
+          delivery_fee?: number
+          fulfilment: string
+          id?: string
+          items: Json
+          notes?: string | null
+          payment_method: string
+          phone: string
+          reference?: string
+          status?: string
+          subtotal: number
+          total: number
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          customer_name?: string
+          delivery_fee?: number
+          fulfilment?: string
+          id?: string
+          items?: Json
+          notes?: string | null
+          payment_method?: string
+          phone?: string
+          reference?: string
+          status?: string
+          subtotal?: number
+          total?: number
+        }
+        Relationships: []
+      }
       reservations: {
         Row: {
           created_at: string
