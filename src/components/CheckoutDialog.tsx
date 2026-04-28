@@ -145,8 +145,26 @@ const CheckoutDialog = ({ open, onOpenChange, items, total, onConfirmed }: Props
               {confirmation.address && (
                 <div className="flex justify-between gap-3"><span className="text-muted-foreground">Address</span><span className="font-medium text-right">{confirmation.address}</span></div>
               )}
-              <div className="flex justify-between border-t border-border pt-2 mt-2"><span className="font-display font-semibold">Total paid on arrival</span><span className="font-display font-bold text-primary">{formatKES(confirmation.grand)}</span></div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Payment</span>
+                <span className="font-medium inline-flex items-center gap-1.5">
+                  {confirmation.payment === "mpesa" ? <Smartphone size={14} /> : <Banknote size={14} />}
+                  {confirmation.payment === "mpesa" ? "M-Pesa" : "Cash on " + (confirmation.mode === "delivery" ? "delivery" : "pickup")}
+                </span>
+              </div>
+              <div className="flex justify-between border-t border-border pt-2 mt-2">
+                <span className="font-display font-semibold">
+                  {confirmation.payment === "mpesa" ? "Total (pay via M-Pesa)" : "Total (pay on arrival)"}
+                </span>
+                <span className="font-display font-bold text-primary">{formatKES(confirmation.grand)}</span>
+              </div>
+              {confirmation.payment === "mpesa" && (
+                <div className="text-xs text-muted-foreground pt-2">
+                  Send to <span className="font-semibold text-foreground">Till 123456</span> using your M-Pesa app, then we'll confirm your order.
+                </div>
+              )}
             </div>
+
 
             <Button variant="hero" size="lg" className="w-full mt-5" onClick={() => close(false)}>
               Done
@@ -207,6 +225,35 @@ const CheckoutDialog = ({ open, onOpenChange, items, total, onConfirmed }: Props
               <div className="space-y-2">
                 <Label htmlFor="co-notes">Notes (optional)</Label>
                 <Textarea id="co-notes" name="notes" maxLength={300} rows={2} placeholder="Allergies, preferences, gate code..." />
+              </div>
+
+              {/* Payment method */}
+              <div>
+                <Label className="mb-2 block">Payment method</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {([
+                    { value: "mpesa", label: "M-Pesa", icon: Smartphone, hint: "Pay via Till" },
+                    { value: "cash", label: "Cash", icon: Banknote, hint: mode === "delivery" ? "On delivery" : "On pickup" },
+                  ] as const).map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setPayment(opt.value)}
+                      className={cn(
+                        "flex flex-col items-center justify-center gap-1 rounded-xl border-2 p-3 font-medium transition-all",
+                        payment === opt.value
+                          ? "border-primary bg-primary/5 text-primary"
+                          : "border-border hover:border-primary/40"
+                      )}
+                    >
+                      <div className="flex items-center gap-2">
+                        <opt.icon size={18} />
+                        {opt.label}
+                      </div>
+                      <span className="text-xs text-muted-foreground font-normal">{opt.hint}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Summary */}
