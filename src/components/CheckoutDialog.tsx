@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Bike, Store, CheckCircle2, Copy } from "lucide-react";
+import { Bike, Store, CheckCircle2, Copy, Banknote, Smartphone } from "lucide-react";
 import {
   Dialog,
   DialogContent,
