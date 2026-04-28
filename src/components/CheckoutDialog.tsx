@@ -48,11 +48,13 @@ const DELIVERY_FEE = 150;
 
 const CheckoutDialog = ({ open, onOpenChange, items, total, onConfirmed }: Props) => {
   const [mode, setMode] = useState<"delivery" | "pickup">("delivery");
+  const [payment, setPayment] = useState<"cash" | "mpesa">("mpesa");
   const [submitting, setSubmitting] = useState(false);
   const [confirmation, setConfirmation] = useState<{
     reference: string;
     name: string;
     mode: "delivery" | "pickup";
+    payment: "cash" | "mpesa";
     address?: string;
     grand: number;
   } | null>(null);
@@ -62,6 +64,7 @@ const CheckoutDialog = ({ open, onOpenChange, items, total, onConfirmed }: Props
 
   const reset = () => {
     setMode("delivery");
+    setPayment("mpesa");
     setConfirmation(null);
   };
 
@@ -101,6 +104,7 @@ const CheckoutDialog = ({ open, onOpenChange, items, total, onConfirmed }: Props
       reference,
       name: parsed.data.name,
       mode: parsed.data.mode,
+      payment,
       address: parsed.data.mode === "delivery" ? parsed.data.address : undefined,
       grand: grandTotal,
     });
