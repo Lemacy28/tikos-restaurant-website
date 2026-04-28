@@ -4,7 +4,7 @@ import { menu } from "@/data/menu";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import { toast } from "sonner";
+import CheckoutDialog from "@/components/CheckoutDialog";
 
 type Cart = Record<string, { name: string; price: number; qty: number }>;
 
@@ -12,6 +12,7 @@ const formatKES = (n: number) => `KES ${n.toLocaleString()}`;
 
 const Order = () => {
   const [cart, setCart] = useState<Cart>({});
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const add = (name: string, price: number) =>
     setCart((c) => ({ ...c, [name]: { name, price, qty: (c[name]?.qty ?? 0) + 1 } }));
@@ -27,14 +28,9 @@ const Order = () => {
     });
   const remove = (name: string) => setCart((c) => { const { [name]: _, ...rest } = c; return rest; });
 
-  const total = useMemo(() => Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0), [cart]);
-  const count = useMemo(() => Object.values(cart).reduce((s, i) => s + i.qty, 0), [cart]);
-
-  const checkout = () => {
-    if (count === 0) return;
-    toast.success("Order placed!", { description: `Total ${formatKES(total)}. We'll call to confirm.` });
-    setCart({});
-  };
+  const items = useMemo(() => Object.values(cart), [cart]);
+  const total = useMemo(() => items.reduce((s, i) => s + i.price * i.qty, 0), [items]);
+  const count = useMemo(() => items.reduce((s, i) => s + i.qty, 0), [items]);
 
   return (
     <Layout>
@@ -106,11 +102,19 @@ const Order = () => {
             <span>Total</span>
             <span className="text-primary">{formatKES(total)}</span>
           </div>
-          <Button variant="hero" size="lg" className="w-full mt-4" disabled={count === 0} onClick={checkout}>
+          <Button variant="hero" size="lg" className="w-full mt-4" disabled={count === 0} onClick={() => setCheckoutOpen(true)}>
             Checkout
           </Button>
         </aside>
       </section>
+
+      <CheckoutDialog
+        open={checkoutOpen}
+        onOpenChange={setCheckoutOpen}
+        items={items}
+        total={total}
+        onConfirmed={() => setCart({})}
+      />
     </Layout>
   );
 };
