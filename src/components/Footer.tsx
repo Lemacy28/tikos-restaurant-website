@@ -37,7 +37,7 @@ const Footer = () => {
           <ul className="space-y-1 text-sm">
             <li><Link to="/menu" className="hover:underline">Menu</Link></li>
             <li><Link to="/reservations" className="hover:underline">Reservations</Link></li>
-            <li><a href="https://www.ubereats.com/ke/search?q=Tikos%20Athi%20River" target="_blank" rel="noopener noreferrer" className="hover:underline">Order on Uber Eats</a></li>
+            <li><a href="https://www.ubereats.com/ke/store/tikoskitengela/PYu55jDxV32G9y-SUsmLIw" target="_blank" rel="noopener noreferrer" className="hover:underline">Order on Uber Eats</a></li>
             <li><Link to="/contact" className="hover:underline">Contact</Link></li>
           </ul>
           <div className="flex gap-3 mt-4">
