@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User as UserIcon, LogIn } from "lucide-react";
 import mascot from "@/assets/chicken-mascot.png";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
 
 const links = [
   { to: "/", label: "Home" },
@@ -16,11 +18,12 @@ const links = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  useLocation(); // re-render on route change
+  const { user } = useAuth();
+  useLocation();
 
   return (
     <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-lg border-b border-border">
-      <nav className="container mx-auto flex items-center justify-between py-3">
+      <nav className="container mx-auto flex items-center justify-between py-3 gap-3">
         <Link to="/" className="flex items-center gap-2 group" onClick={() => setOpen(false)}>
           <img src={mascot} alt="Tikos chicken mascot" className="h-12 w-12 group-hover:animate-wiggle" width={48} height={48} />
           <div className="leading-none">
@@ -47,6 +50,18 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
+
+        <div className="hidden lg:flex items-center gap-2">
+          {user ? (
+            <Button asChild variant="outline" size="sm" className="rounded-full">
+              <Link to="/account"><UserIcon size={14} /> Account</Link>
+            </Button>
+          ) : (
+            <Button asChild variant="hero" size="sm" className="rounded-full">
+              <Link to="/auth"><LogIn size={14} /> Sign in</Link>
+            </Button>
+          )}
+        </div>
 
         <button
           aria-label="Toggle menu"
@@ -77,6 +92,20 @@ const Navbar = () => {
                 </NavLink>
               </li>
             ))}
+            <li className="pt-2 border-t border-border mt-2">
+              <NavLink
+                to={user ? "/account" : "/auth"}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  cn(
+                    "flex items-center gap-2 px-4 py-3 rounded-lg font-medium",
+                    isActive ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                  )
+                }
+              >
+                {user ? <><UserIcon size={16} /> My Account</> : <><LogIn size={16} /> Sign in / Register</>}
+              </NavLink>
+            </li>
           </ul>
         </div>
       )}
