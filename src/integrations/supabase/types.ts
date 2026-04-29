@@ -14,6 +14,56 @@ export type Database = {
   }
   public: {
     Tables: {
+      mpesa_transactions: {
+        Row: {
+          amount: number | null
+          checkout_request_id: string | null
+          created_at: string
+          id: string
+          merchant_request_id: string | null
+          mpesa_receipt_number: string | null
+          order_id: string | null
+          phone: string | null
+          raw: Json | null
+          result_code: number | null
+          result_desc: string | null
+        }
+        Insert: {
+          amount?: number | null
+          checkout_request_id?: string | null
+          created_at?: string
+          id?: string
+          merchant_request_id?: string | null
+          mpesa_receipt_number?: string | null
+          order_id?: string | null
+          phone?: string | null
+          raw?: Json | null
+          result_code?: number | null
+          result_desc?: string | null
+        }
+        Update: {
+          amount?: number | null
+          checkout_request_id?: string | null
+          created_at?: string
+          id?: string
+          merchant_request_id?: string | null
+          mpesa_receipt_number?: string | null
+          order_id?: string | null
+          phone?: string | null
+          raw?: Json | null
+          result_code?: number | null
+          result_desc?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mpesa_transactions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           address: string | null
@@ -23,13 +73,17 @@ export type Database = {
           fulfilment: string
           id: string
           items: Json
+          mpesa_checkout_request_id: string | null
+          mpesa_receipt: string | null
           notes: string | null
           payment_method: string
+          payment_status: string
           phone: string
           reference: string
           status: string
           subtotal: number
           total: number
+          user_id: string | null
         }
         Insert: {
           address?: string | null
@@ -39,13 +93,17 @@ export type Database = {
           fulfilment: string
           id?: string
           items: Json
+          mpesa_checkout_request_id?: string | null
+          mpesa_receipt?: string | null
           notes?: string | null
           payment_method: string
+          payment_status?: string
           phone: string
           reference?: string
           status?: string
           subtotal: number
           total: number
+          user_id?: string | null
         }
         Update: {
           address?: string | null
@@ -55,13 +113,44 @@ export type Database = {
           fulfilment?: string
           id?: string
           items?: Json
+          mpesa_checkout_request_id?: string | null
+          mpesa_receipt?: string | null
           notes?: string | null
           payment_method?: string
+          payment_status?: string
           phone?: string
           reference?: string
           status?: string
           subtotal?: number
           total?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
