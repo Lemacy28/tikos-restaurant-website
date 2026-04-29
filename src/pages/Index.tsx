@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
-import { ArrowRight, Star, Clock, MapPin, Utensils } from "lucide-react";
+import { ArrowRight, Star, Clock, MapPin, Utensils, ExternalLink } from "lucide-react";
+import { UBER_EATS_URL } from "@/lib/external";
 import hero from "@/assets/hero-chicken.jpg";
 import mascot from "@/assets/chicken-mascot.png";
 import wings from "@/assets/gallery-wings.jpg";
@@ -26,7 +27,7 @@ const Index = () => {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="cta" size="xl">
-                <Link to="/order">Order Online <ArrowRight /></Link>
+                <a href={UBER_EATS_URL} target="_blank" rel="noopener noreferrer">Order on Uber Eats <ExternalLink size={16} /></a>
               </Button>
               <Button asChild variant="outlineHero" size="xl">
                 <Link to="/reservations">Book a Table</Link>
@@ -136,7 +137,7 @@ const Index = () => {
           <h2 className="font-display text-4xl md:text-5xl font-bold">Hungry yet?</h2>
           <p className="mt-3 text-lg text-primary-foreground/90 max-w-xl mx-auto">Order online for delivery or pick-up — your favorite meal is just a few clicks away.</p>
           <div className="mt-7 flex justify-center flex-wrap gap-3">
-            <Button asChild variant="cta" size="xl"><Link to="/order">Order Now</Link></Button>
+            <Button asChild variant="cta" size="xl"><a href={UBER_EATS_URL} target="_blank" rel="noopener noreferrer">Order on Uber Eats</a></Button>
             <Button asChild variant="outlineHero" size="xl"><Link to="/menu">View Menu</Link></Button>
           </div>
         </div>
