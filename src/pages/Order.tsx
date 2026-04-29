@@ -3,8 +3,9 @@ import Layout from "@/components/Layout";
 import { menu } from "@/data/menu";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import CheckoutDialog from "@/components/CheckoutDialog";
+import { Minus, Plus, ShoppingBag, Trash2, ExternalLink } from "lucide-react";
+import { openUberEats, UBER_EATS_URL } from "@/lib/external";
+import ubereatsLogo from "@/assets/chicken-mascot.png";
 
 type Cart = Record<string, { name: string; price: number; qty: number }>;
 
@@ -12,7 +13,6 @@ const formatKES = (n: number) => `KES ${n.toLocaleString()}`;
 
 const Order = () => {
   const [cart, setCart] = useState<Cart>({});
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const add = (name: string, price: number) =>
     setCart((c) => ({ ...c, [name]: { name, price, qty: (c[name]?.qty ?? 0) + 1 } }));
@@ -37,8 +37,26 @@ const Order = () => {
       <section className="gradient-hero text-primary-foreground py-16 text-center">
         <div className="container mx-auto">
           <span className="uppercase tracking-widest text-sm text-primary-foreground/80">Order Online</span>
-          <h1 className="font-display text-5xl md:text-6xl font-bold mt-2">Build your order</h1>
-          <p className="mt-3 max-w-xl mx-auto text-primary-foreground/90">Pickup or delivery in Kitengela.</p>
+          <h1 className="font-display text-5xl md:text-6xl font-bold mt-2">Order on Uber Eats</h1>
+          <p className="mt-3 max-w-xl mx-auto text-primary-foreground/90">
+            Browse our menu below — when you're ready, we'll hand off to Uber Eats for delivery and payment.
+          </p>
+        </div>
+      </section>
+
+      {/* Uber Eats banner */}
+      <section className="container mx-auto -mt-8 relative z-10">
+        <div className="bg-card border border-border rounded-2xl p-5 shadow-card flex flex-col sm:flex-row items-center gap-4 justify-between">
+          <div className="flex items-center gap-3 text-center sm:text-left">
+            <img src={ubereatsLogo} alt="" className="h-12 w-12" />
+            <div>
+              <div className="font-display font-semibold">Delivery handled by Uber Eats</div>
+              <div className="text-sm text-muted-foreground">Tikos doesn't run its own delivery — order through Uber Eats for fastest service.</div>
+            </div>
+          </div>
+          <Button variant="hero" size="lg" onClick={openUberEats}>
+            Open Uber Eats <ExternalLink size={16} />
+          </Button>
         </div>
       </section>
 
@@ -73,12 +91,12 @@ const Order = () => {
         <aside className="lg:sticky lg:top-24 h-fit bg-card border border-border rounded-3xl p-6 shadow-card">
           <div className="flex items-center gap-2 mb-4">
             <ShoppingBag className="text-primary" />
-            <h2 className="font-display text-xl font-bold">Your Order</h2>
+            <h2 className="font-display text-xl font-bold">Your Picks</h2>
             <Badge variant="secondary" className="ml-auto">{count}</Badge>
           </div>
 
           {count === 0 ? (
-            <p className="text-sm text-muted-foreground py-10 text-center">Your cart is empty. Add something tasty!</p>
+            <p className="text-sm text-muted-foreground py-10 text-center">Browse the menu and tap "Add" to build your wishlist, then continue on Uber Eats.</p>
           ) : (
             <ul className="space-y-3 max-h-80 overflow-y-auto pr-1">
               {Object.values(cart).map((i) => (
@@ -99,22 +117,25 @@ const Order = () => {
           )}
 
           <div className="mt-6 flex items-center justify-between font-display text-lg font-bold">
-            <span>Total</span>
+            <span>Estimated total</span>
             <span className="text-primary">{formatKES(total)}</span>
           </div>
-          <Button variant="hero" size="lg" className="w-full mt-4" disabled={count === 0} onClick={() => setCheckoutOpen(true)}>
-            Checkout
+          <Button variant="hero" size="lg" className="w-full mt-4" onClick={openUberEats}>
+            Continue on Uber Eats <ExternalLink size={16} />
           </Button>
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            You'll re-add items in the Uber Eats app — final pricing & delivery fees shown there.
+          </p>
+          <a
+            href={UBER_EATS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-xs text-center text-muted-foreground/70 mt-1 hover:text-primary"
+          >
+            ubereats.com →
+          </a>
         </aside>
       </section>
-
-      <CheckoutDialog
-        open={checkoutOpen}
-        onOpenChange={setCheckoutOpen}
-        items={items}
-        total={total}
-        onConfirmed={() => setCart({})}
-      />
     </Layout>
   );
 };
