@@ -3,8 +3,8 @@ import Layout from "@/components/Layout";
 import { menu } from "@/data/menu";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus, ShoppingBag, Trash2, MessageCircle } from "lucide-react";
-import { openWhatsApp } from "@/lib/external";
+import { Minus, Plus, ShoppingBag, Trash2, MessageCircle, ExternalLink } from "lucide-react";
+import { openWhatsApp, openUberEats } from "@/lib/external";
 
 const formatKES = (n: number) => `KES ${n.toLocaleString()}`;
 
@@ -170,6 +170,19 @@ const Menu = () => {
             </Button>
             <p className="text-xs text-muted-foreground text-center mt-2">
               Opens WhatsApp chat with Tikos Kitengela (0729 088 088).
+            </p>
+
+            <div className="flex items-center gap-3 my-4">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">or</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+
+            <Button variant="outline" size="lg" className="w-full rounded-full" onClick={openUberEats}>
+              Order on Uber Eats <ExternalLink size={16} />
+            </Button>
+            <p className="text-xs text-muted-foreground text-center mt-2">
+              Delivery handled by Uber Eats — final pricing shown there.
             </p>
           </aside>
         </div>
