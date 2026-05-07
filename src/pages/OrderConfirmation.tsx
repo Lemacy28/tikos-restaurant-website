@@ -84,9 +84,9 @@ const OrderConfirmation = () => {
     );
   }
 
-  const flow = order.fulfilment === "pickup"
+  const flow: string[] = order.fulfilment === "pickup"
     ? ["new", "preparing", "delivered"]
-    : STATUS_FLOW;
+    : [...STATUS_FLOW];
   const stepIdx = flow.indexOf(order.status);
 
   return (
