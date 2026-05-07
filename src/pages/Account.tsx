@@ -143,17 +143,19 @@ const Account = () => {
           ) : (
             <ul className="space-y-3">
               {orders.map((o) => (
-                <li key={o.id} className="bg-card border border-border rounded-2xl p-4 shadow-card flex items-center justify-between">
-                  <div>
-                    <div className="font-display font-bold text-primary tracking-wider">{o.reference}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {new Date(o.created_at).toLocaleString()} · <span className="capitalize">{o.fulfilment}</span> · <span className="capitalize">{o.payment_method}</span>
+                <li key={o.id}>
+                  <Link to={`/order-confirmation/${o.reference}`} className="bg-card border border-border rounded-2xl p-4 shadow-card flex items-center justify-between hover:border-primary transition-colors">
+                    <div>
+                      <div className="font-display font-bold text-primary tracking-wider">{o.reference}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {new Date(o.created_at).toLocaleString()} · <span className="capitalize">{o.fulfilment}</span> · <span className="capitalize">{o.payment_method}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-display font-bold">{formatKES(o.total)}</div>
-                    <Badge variant="secondary" className="capitalize mt-1">{o.status}</Badge>
-                  </div>
+                    <div className="text-right">
+                      <div className="font-display font-bold">{formatKES(o.total)}</div>
+                      <Badge variant="secondary" className="capitalize mt-1">{o.status.replace(/_/g, " ")}</Badge>
+                    </div>
+                  </Link>
                 </li>
               ))}
             </ul>
