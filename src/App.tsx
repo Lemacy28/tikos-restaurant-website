@@ -15,6 +15,7 @@ import Contact from "./pages/Contact.tsx";
 import Auth from "./pages/Auth.tsx";
 import Account from "./pages/Account.tsx";
 import AdminOrders from "./pages/AdminOrders.tsx";
+import AdminManage from "./pages/AdminManage.tsx";
 import OrderConfirmation from "./pages/OrderConfirmation.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/account" element={<Account />} />
               <Route path="/admin/orders" element={<AdminOrders />} />
+              <Route path="/admin/manage" element={<AdminManage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
