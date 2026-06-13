@@ -9,6 +9,7 @@ import Index from "./pages/Index.tsx";
 import Menu from "./pages/Menu.tsx";
 import About from "./pages/About.tsx";
 import Gallery from "./pages/Gallery.tsx";
+import Reviews from "./pages/Reviews.tsx";
 import Reservations from "./pages/Reservations.tsx";
 import Order from "./pages/Order.tsx";
 import Contact from "./pages/Contact.tsx";
