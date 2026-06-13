@@ -98,7 +98,7 @@ const Checkout = () => {
     }
 
     setSubmitting(true);
-    const orderItems = items.map((i) => ({ name: i.name, price: i.price, qty: i.qty }));
+    const orderItems = items.map((i) => ({ id: i.id, name: i.name, price: i.price, qty: i.qty }));
     const { data, error } = await supabase
       .from("orders")
       .insert({
