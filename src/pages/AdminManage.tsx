@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Plus, Trash2, Pencil, Save, Upload, Star, X, Check, Settings as SettingsIcon, Tag, ImageIcon, UtensilsCrossed, MessageSquare } from "lucide-react";
+import { Plus, Trash2, Pencil, Save, Upload, Star, X, Check, Settings as SettingsIcon, Tag, ImageIcon, UtensilsCrossed, MessageSquare, BookOpen } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,17 +68,19 @@ const AdminManage = () => {
       </header>
       <main className="container mx-auto py-8">
         <Tabs defaultValue="menu">
-          <TabsList className="grid w-full max-w-2xl grid-cols-4">
+          <TabsList className="grid w-full max-w-3xl grid-cols-5">
             <TabsTrigger value="menu"><UtensilsCrossed size={14} className="mr-1.5" />Menu</TabsTrigger>
             <TabsTrigger value="settings"><SettingsIcon size={14} className="mr-1.5" />Settings</TabsTrigger>
             <TabsTrigger value="promos"><Tag size={14} className="mr-1.5" />Promos</TabsTrigger>
             <TabsTrigger value="reviews"><MessageSquare size={14} className="mr-1.5" />Reviews</TabsTrigger>
+            <TabsTrigger value="reservations"><BookOpen size={14} className="mr-1.5" />Reservations</TabsTrigger>
           </TabsList>
 
           <TabsContent value="menu" className="mt-6"><MenuManager /></TabsContent>
           <TabsContent value="settings" className="mt-6"><SettingsManager /></TabsContent>
           <TabsContent value="promos" className="mt-6"><PromoManager /></TabsContent>
           <TabsContent value="reviews" className="mt-6"><ReviewsManager /></TabsContent>
+          <TabsContent value="reservations" className="mt-6"><ReservationsManager /></TabsContent>
         </Tabs>
       </main>
     </div>
@@ -540,6 +542,95 @@ const ReviewsManager = () => {
       ))}
       {list.length === 0 && (
         <div className="bg-card border border-border rounded-2xl p-10 text-center text-muted-foreground">No reviews yet.</div>
+      )}
+    </div>
+  );
+};
+
+/* ---------------- Reservations manager ---------------- */
+type ReservationRow = {
+  id: string;
+  reference: string;
+  name: string;
+  phone: string;
+  email: string | null;
+  reservation_date: string;
+  reservation_time: string;
+  party_size: number;
+  notes: string | null;
+  created_at: string;
+};
+
+const ReservationsManager = () => {
+  const [list, setList] = useState<ReservationRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("upcoming");
+
+  const load = async () => {
+    setLoading(true);
+    let q = supabase.from("reservations").select("*").order("reservation_date", { ascending: true });
+    if (filter === "upcoming") {
+      q = q.gte("reservation_date", new Date().toISOString().slice(0, 10));
+    } else if (filter === "past") {
+      q = q.lt("reservation_date", new Date().toISOString().slice(0, 10));
+    }
+    const { data } = await q;
+    setList((data ?? []) as ReservationRow[]);
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, [filter]);
+
+  const remove = async (id: string) => {
+    if (!confirm("Cancel / delete this reservation?")) return;
+    await supabase.from("reservations").delete().eq("id", id);
+    load();
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <Button size="sm" variant={filter === "upcoming" ? "default" : "outline"} onClick={() => setFilter("upcoming")}>Upcoming</Button>
+        <Button size="sm" variant={filter === "past" ? "default" : "outline"} onClick={() => setFilter("past")}>Past</Button>
+        <Button size="sm" variant={filter === "all" ? "default" : "outline"} onClick={() => setFilter("all")}>All</Button>
+      </div>
+
+      {loading ? (
+        <p className="text-sm text-muted-foreground">Loading…</p>
+      ) : (
+        <div className="bg-card border border-border rounded-2xl overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Reference</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Time</TableHead>
+                <TableHead>Party</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {list.map((r) => (
+                <TableRow key={r.id}>
+                  <TableCell className="font-mono font-bold">{r.reference}</TableCell>
+                  <TableCell className="font-medium">{r.name}</TableCell>
+                  <TableCell>{new Date(r.reservation_date).toLocaleDateString()}</TableCell>
+                  <TableCell>{r.reservation_time?.slice(0, 5) ?? "—"}</TableCell>
+                  <TableCell>{r.party_size}</TableCell>
+                  <TableCell className="text-sm">{r.phone}</TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="ghost" size="sm" className="text-destructive" onClick={() => remove(r.id)}><Trash2 size={14} /></Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {list.length === 0 && (
+                <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">No reservations found.</TableCell></TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       )}
     </div>
   );

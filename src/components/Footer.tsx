@@ -36,6 +36,7 @@ const Footer = () => {
           <h4 className="font-display text-lg mb-3">Explore</h4>
           <ul className="space-y-1 text-sm">
             <li><Link to="/menu" className="hover:underline">Menu</Link></li>
+            <li><Link to="/reviews" className="hover:underline">Reviews</Link></li>
             <li><Link to="/reservations" className="hover:underline">Reservations</Link></li>
             <li><a href="https://www.ubereats.com/ke/store/tikoskitengela/PYu55jDxV32G9y-SUsmLIw" target="_blank" rel="noopener noreferrer" className="hover:underline">Order on Uber Eats</a></li>
             <li><Link to="/contact" className="hover:underline">Contact</Link></li>

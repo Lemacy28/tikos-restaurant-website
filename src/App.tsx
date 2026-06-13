@@ -9,6 +9,7 @@ import Index from "./pages/Index.tsx";
 import Menu from "./pages/Menu.tsx";
 import About from "./pages/About.tsx";
 import Gallery from "./pages/Gallery.tsx";
+import Reviews from "./pages/Reviews.tsx";
 import Reservations from "./pages/Reservations.tsx";
 import Order from "./pages/Order.tsx";
 import Contact from "./pages/Contact.tsx";
@@ -35,7 +36,8 @@ const App = () => (
               <Route path="/menu" element={<Menu />} />
               <Route path="/about" element={<About />} />
               <Route path="/gallery" element={<Gallery />} />
-              <Route path="/reservations" element={<Reservations />} />
+          <Route path="/reservations" element={<Reservations />} />
+          <Route path="/reviews" element={<Reviews />} />
               <Route path="/order" element={<Order />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-confirmation/:reference" element={<OrderConfirmation />} />
