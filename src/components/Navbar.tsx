@@ -11,6 +11,7 @@ const links = [
   { to: "/menu", label: "Menu" },
   { to: "/about", label: "About" },
   { to: "/gallery", label: "Gallery" },
+  { to: "/reviews", label: "Reviews" },
   { to: "/reservations", label: "Reservations" },
   { to: "/order", label: "Order" },
   { to: "/contact", label: "Contact" },
