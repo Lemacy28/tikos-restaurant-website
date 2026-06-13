@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Plus, Trash2, Pencil, Save, Upload, Star, X, Check, Settings as SettingsIcon, Tag, ImageIcon, UtensilsCrossed, MessageSquare } from "lucide-react";
+import { Plus, Trash2, Pencil, Save, Upload, Star, X, Check, Settings as SettingsIcon, Tag, ImageIcon, UtensilsCrossed, MessageSquare, BookOpen } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
