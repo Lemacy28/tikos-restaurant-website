@@ -60,31 +60,18 @@ const Checkout = () => {
   const applyPromo = async () => {
     const code = promo.trim().toUpperCase();
     if (!code) return;
-    const { data, error } = await supabase
-      .from("promo_codes")
-      .select("*")
-      .eq("code", code)
-      .eq("active", true)
-      .maybeSingle();
-    if (error || !data) {
-      toast.error("Invalid or expired code");
+    const { data, error } = await supabase.rpc("validate_promo_code", {
+      _code: code,
+      _subtotal: subtotal,
+    });
+    const row = Array.isArray(data) ? data[0] : data;
+    if (error || !row || !row.valid) {
+      toast.error(row?.message ?? "Invalid or expired code");
       return;
     }
-    if (data.expires_at && new Date(data.expires_at) < new Date()) {
-      toast.error("This code has expired");
-      return;
-    }
-    if (data.max_uses && data.used_count >= data.max_uses) {
-      toast.error("This code has reached its usage limit");
-      return;
-    }
-    const d =
-      data.discount_type === "percent"
-        ? Math.round((subtotal * data.discount_value) / 100)
-        : data.discount_value;
-    setDiscount(d);
+    setDiscount(row.discount);
     setAppliedCode(code);
-    toast.success(`Code applied — saved ${formatKES(d)}`);
+    toast.success(`Code applied — saved ${formatKES(row.discount)}`);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -111,7 +98,7 @@ const Checkout = () => {
     }
 
     setSubmitting(true);
-    const orderItems = items.map((i) => ({ name: i.name, price: i.price, qty: i.qty }));
+    const orderItems = items.map((i) => ({ id: i.id, name: i.name, price: i.price, qty: i.qty }));
     const { data, error } = await supabase
       .from("orders")
       .insert({

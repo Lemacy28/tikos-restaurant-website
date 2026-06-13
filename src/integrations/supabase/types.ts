@@ -417,6 +417,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      validate_promo_code: {
+        Args: { _code: string; _subtotal: number }
+        Returns: {
+          discount: number
+          message: string
+          valid: boolean
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "staff" | "user"
