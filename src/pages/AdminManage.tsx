@@ -68,17 +68,19 @@ const AdminManage = () => {
       </header>
       <main className="container mx-auto py-8">
         <Tabs defaultValue="menu">
-          <TabsList className="grid w-full max-w-2xl grid-cols-4">
+          <TabsList className="grid w-full max-w-3xl grid-cols-5">
             <TabsTrigger value="menu"><UtensilsCrossed size={14} className="mr-1.5" />Menu</TabsTrigger>
             <TabsTrigger value="settings"><SettingsIcon size={14} className="mr-1.5" />Settings</TabsTrigger>
             <TabsTrigger value="promos"><Tag size={14} className="mr-1.5" />Promos</TabsTrigger>
             <TabsTrigger value="reviews"><MessageSquare size={14} className="mr-1.5" />Reviews</TabsTrigger>
+            <TabsTrigger value="reservations"><BookOpen size={14} className="mr-1.5" />Reservations</TabsTrigger>
           </TabsList>
 
           <TabsContent value="menu" className="mt-6"><MenuManager /></TabsContent>
           <TabsContent value="settings" className="mt-6"><SettingsManager /></TabsContent>
           <TabsContent value="promos" className="mt-6"><PromoManager /></TabsContent>
           <TabsContent value="reviews" className="mt-6"><ReviewsManager /></TabsContent>
+          <TabsContent value="reservations" className="mt-6"><ReservationsManager /></TabsContent>
         </Tabs>
       </main>
     </div>
